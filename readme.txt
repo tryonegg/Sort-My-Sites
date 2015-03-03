@@ -1,6 +1,6 @@
 === Plugin Name ===
 Contributors: tryon
-Tags: network, my sites
+Tags: network, my sites, multisite, sites, wpmu, dahsboard, sort, order
 Requires at least: 3.0
 Tested up to: 4.1
 Stable tag: trunk
