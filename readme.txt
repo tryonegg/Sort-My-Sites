@@ -23,18 +23,21 @@ Options:
 
 1. Install Sort My Sites either via the WordPress.org plugin directory, or by uploading the files to your server. 
 2. Activate the plugin through the Network Plugins menu in WordPress
-3. Look at your my sites page or menu, they will now be in order, you can change the order from the Network -> Settings menu
+3. Look at your my sites page or menu, they will now be in order, you can change global options from the Network -> Settings menu, users can change their settings from the screen options menu on the My Sites page 
 
 == Screenshots ==
 
 1. /options-screenshot.png
 
 == Changelog ==
-
+= 1.1 = 
+* Added the ability for users to change the options from the screen options on the my sites page, preferences are stored with the user account. 
 = 1.0 =
 * Initial Release
 
 == Upgrade Notice == 
 
+= 1.1 = 
+* Added the ability for users to change the options from the screen options on the my sites page, preferences are stored with the user account. 
 = 1.0 =
 * Initial Release

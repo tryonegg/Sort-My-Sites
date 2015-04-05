@@ -53,7 +53,7 @@ class sort_my_sites_admin {
 							<div><input type='hidden' name='wp_screen_options[option]' value='" .  $this->plugin_slug . "_options' /></div>
 							<div><input type='hidden' name='wp_screen_options[value]' value='yes' /></div>
 							<div class='custom_fields'>
-								<label for='order_by'>Order By:</label>
+								<label for='order_by'>Order by</label>
 								<select name='" .  $this->plugin_slug . "_options[order_by]' id='order_by'>";
 
 									foreach($this->options['order_options'] as $option => $title){					
@@ -61,8 +61,8 @@ class sort_my_sites_admin {
 									}
 
 								$return .="</select>
-								<label for='case_sensitive'><input type='checkbox' value='1' name='" .  $this->plugin_slug . "_options[case_sensitive]' id='case_sensitive' ". checked( true, $this->options["case_sensitive" ], false ) ." /> Case Sensitive</label>
-								<label for='primary_at_top'><input type='checkbox' value='1' name='" .  $this->plugin_slug . "_options[primary_at_top]' id='primary_at_top' ". checked( true, $this->options["primary_at_top" ], false ) ." /> Keep primary site at the top</label>
+								<label for='case_sensitive'><input type='checkbox' value='1' name='" .  $this->plugin_slug . "_options[case_sensitive]' id='case_sensitive' ". checked( true, $this->options["case_sensitive" ], false ) ." /> Case sensitive</label>
+								<label for='primary_at_top'><input type='checkbox' value='1' name='" .  $this->plugin_slug . "_options[primary_at_top]' id='primary_at_top' ". checked( true, $this->options["primary_at_top" ], false ) ." /> Always show the primary site first</label>
 							</div>
 						</div>
 					</fieldset>
