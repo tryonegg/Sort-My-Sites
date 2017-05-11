@@ -15,7 +15,7 @@
 		</td>
 	</tr>
 	<tr>
-		<th><label for="<?php echo $this->plugin_slug . "_case_sensitive"  ?>">Case sensative</label></th>
+		<th><label for="<?php echo $this->plugin_slug . "_case_sensitive"  ?>">Case sensitive</label></th>
 		<td>
 			<label>
 				<input type="checkbox" name="<?php echo $this->plugin_slug . "_case_sensitive" ?>" value="1" <?php checked( true, $this->options["case_sensitive" ], true ); ?>>
