@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="128px" height="128px" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.1 (12005) - http://www.bohemiancoding.com/sketch -->
+    <title>icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#92DAFB" offset="0%"></stop>
+            <stop stop-color="#5FABCF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="icon" sketch:type="MSArtboardGroup">
+            <rect id="Rectangle-1-Copy" fill="url(#linearGradient-1)" sketch:type="MSShapeGroup" x="0" y="0" width="128" height="128"></rect>
+            <path d="M76.9359541,77.2926909 L76.9359541,50.7073091 L90.4230315,50.7073091 L63.8723661,15.5 L37.3217007,50.7073091 L51.0640459,50.7073091 L51.0640459,77.2926909 L37.5769685,77.2926909 L64.1276339,112.5 L90.6782993,77.2926909 L76.9359541,77.2926909 Z" id="Shape-Copy" fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
+        </g>
+    </g>
+</svg>
