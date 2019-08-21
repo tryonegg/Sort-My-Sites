@@ -1,11 +1,11 @@
-<?php 
+<?php
 /*
 Plugin Name: Sort My Sites
 Plugin URI: https://github.com/tryonegg/sort-my-sites
-Description: Sort both the Admin Bar->My Sites dropdown and My Sites page in the dasboard. 
+Description: Sort both the Admin Bar->My Sites dropdown and My Sites page in the dasboard.
 Author: Tryon Eggleston
 Author URI: https://github.com/tryonegg/
-Version: 1.1
+Version: 1.2
 Network: true
 */
 
@@ -13,23 +13,23 @@ if ( ! defined( 'WPINC' ) ) { // If this file is called directly, abort.
 	die;
 }
 
-class sort_my_sites {
-	const VERSION = 1.1;
-	protected $plugin_slug = 'sort-my-sites';
+class Sort_my_sites {
+	const VERSION              = 1.1;
+	protected $plugin_slug     = 'sort-my-sites';
 	protected static $instance = null;
 
 	protected $options = array(
-		 "case_sensitive"	=> false,
-		 "primary_at_top"	=> true,
-		 "order_by" 		=> "blogname",
-		 "order_options" 	=> array(
-			null 				=> 'None',
-			'userblog_id' 		=> "Site ID", 
-			'blogname' 			=> "Site Name", 
-			'domain' 			=> "Domain", 
-			'path' 				=> "Site Path", 
-			'siteurl' 			=> "Site URL" 
-		)
+		'case_sensitive' => false,
+		'primary_at_top' => true,
+		'order_by'       => 'blogname',
+		'order_options'  => array(
+			null          => 'None',
+			'userblog_id' => 'Site ID',
+			'blogname'    => 'Site Name',
+			'domain'      => 'Domain',
+			'path'        => 'Site Path',
+			'siteurl'     => 'Site URL',
+		),
 	);
 
 	public function get_plugin_slug() {
@@ -41,19 +41,22 @@ class sort_my_sites {
 	}
 
 	private function __construct() {
+		if ( ! is_user_logged_in() ) {
+			return;
+		}
 
 		add_filter( 'get_blogs_of_user', array( $this, 'sort_sites' ) );
 
-		$this->options['case_sensitive'] = $this->get_option('case_sensitive');
-		$this->options['primary_at_top'] = $this->get_option('primary_at_top');
-		$this->options['order_by'] = $this->get_option('order_by');
+		$this->options['case_sensitive'] = $this->get_option( 'case_sensitive' );
+		$this->options['primary_at_top'] = $this->get_option( 'primary_at_top' );
+		$this->options['order_by']       = $this->get_option( 'order_by' );
 
 	}
 
 	public static function get_instance() {
 		// If the single instance hasn't been set, set it now.
 		if ( null == self::$instance ) {
-			self::$instance = new self;
+			self::$instance = new self();
 		}
 
 		return self::$instance;
@@ -62,21 +65,32 @@ class sort_my_sites {
 
 	/**
 	 * Gets the most relevant option setting
+	 *
 	 * @param string
-	*/
-	public function get_option( $option ){
+	 */
+	public function get_option( $option ) {
 
-		$useroptions = get_user_meta( get_current_user_id(), 'sort_my_sites_options', true);
-
-		if( $useroptions ){
-			if( isset( $useroptions[$option] ) ){
-				return $useroptions[$option];
+		if ( $useroptions = get_user_meta( get_current_user_id(), 'sort_my_sites_options', true ) ) {
+			if ( isset( $useroptions[ $option ] ) ) {
+				return $useroptions[ $option ];
 			} else {
 				return false;
 			}
+		} elseif ( $siteoptions = get_site_option( $this->plugin_slug ) ) {
+			if ( isset( $siteoptions[ $option ] ) ) {
+				return $siteoptions[ $option ];
+			} else {
+				return false;
+			}
+		} elseif ( $siteoption = get_site_option( $this->plugin_slug . '_' . $option, $this->options[ $option ] ) ) {
+			return $siteoption;
 		} else {
-			return get_site_option(  $this->plugin_slug . "_" . $option, $this->options[ $option ]  );
+			if ( isset( $this->options[ $option ] ) ) {
+				return $this->options[ $option ];
+			}
 		}
+
+		return false;
 
 	}
 
@@ -87,19 +101,19 @@ class sort_my_sites {
 	 * @param  object
 	 * @param  object
 	 */
-	
-	public function sorter($a, $b){
+
+	public function sorter( $a, $b ) {
 		$o = $this->options['order_by'];
-		if ( $a->$o == $b->$o){
+		if ( $a->$o == $b->$o ) {
 			return 0;
 		} else {
-			if( $this->options['case_sensitive'] ){
-				return ($a->$o < $b->$o ) ? -1 : 1;
+			if ( $this->options['case_sensitive'] ) {
+				return ( $a->$o < $b->$o ) ? -1 : 1;
 			} else {
-				return ( strtolower($a->$o) < strtolower($b->$o) ) ? -1 : 1; 
+				return ( strtolower( $a->$o ) < strtolower( $b->$o ) ) ? -1 : 1;
 			}
 		}
-	}	
+	}
 
 
 	/**
@@ -108,25 +122,34 @@ class sort_my_sites {
 	 * @param  object of the sites unsorted
 	 * @return object of the sites sorted
 	 */
-	public function sort_sites($sites){
+	public function sort_sites( $sites ) {
 
-		if( $this->options['order_by'] == null ) return $sites;
+		if ( $this->options['order_by'] == null ) {
+			return $sites;
+		}
 
-		if( array_key_exists( $this->options['order_by'], $this->options['order_options'] ) ) { 
+		if ( array_key_exists( $this->options['order_by'], $this->options['order_options'] ) ) {
 
-			if ( $this->options['primary_at_top'] ) {
+			if ( $this->options['primary_at_top'] && $primary_id = get_user_meta( get_current_user_id(), 'primary_blog', true ) ) {
 
-				$primary = $sites[1];
-				unset( $sites[1] );
+				if ( isset( $_POST['primary_blog'] ) ) {
+					$primary_id   = intval( $_POST['primary_blog'] );
+					$primary_site = $sites[ $primary_id ];
+
+					unset( $sites[ $primary_id ] );
+
+					uasort( $sites, array( $this, 'sorter' ) );
+
+					array_unshift( $sites, $primary_site );
+
+				} else {
+					uasort( $sites, array( $this, 'sorter' ) );
+				}
+			} else {
+
+				uasort( $sites, array( $this, 'sorter' ) );
 
 			}
-
-			uasort( $sites, array( $this, 'sorter' ) );
-
-			if ( $this->options['primary_at_top'] ) {
-				array_unshift( $sites, $primary );
-			}
-
 		}
 
 		return $sites;
@@ -134,15 +157,14 @@ class sort_my_sites {
 
 }
 
-if( is_multisite() ){
+if ( is_multisite() ) {
 
-	add_action( 'plugins_loaded', array( 'sort_my_sites', 'get_instance' ) );
+	add_action( 'plugins_loaded', array( 'Sort_my_sites', 'get_instance' ) );
 
 	if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
 
-		require_once( plugin_dir_path( __FILE__ ) . 'admin/class-sort-my-sites-admin.php' );
-		add_action( 'plugins_loaded', array( 'sort_my_sites_admin', 'get_instance' ) );
+		require_once plugin_dir_path( __FILE__ ) . 'admin/class-sort-my-sites-admin.php';
+		add_action( 'plugins_loaded', array( 'Sort_my_sites_admin', 'get_instance' ) );
 
 	}
-
 }
