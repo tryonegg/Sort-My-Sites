@@ -1,17 +1,18 @@
 name: Deploy to WordPress.org
-
-on: push
-
+on:
+  push:
+    tags:
+    - "*"
 jobs:
   tag:
-    name: tag
+    name: New tag
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
     - name: WordPress Plugin Deploy
-      uses: 10up/action-wordpress-plugin-deploy@master
+      uses: 10up/action-wordpress-plugin-deploy@stable
       env:
-        SLUG: sort-my-sites
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+        SLUG: sort-my-sites
+
