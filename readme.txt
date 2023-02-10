@@ -30,6 +30,10 @@ Options:
 1. /options-screenshot.png
 
 == Changelog ==
+= 1.3 = 
+* Added ability to sort by site creation date or last modified date
+* Added sort direction picker
+* Misc fixes
 = 1.2 =
 * Update: Consolidated the number of DB calls per page load. 
 * Fix: the Primary site was always set to site 1, will now use the selected primary site.
